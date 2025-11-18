@@ -8,21 +8,34 @@ This is a simple tmux configuration enabling to have arbitrarily many nested tmu
 
 # Quick start
 
+The easiest and recommended way to install is as a [TPM
+plugin](https://github.com/tmux-plugins/tpm#installation). Add this line to your
+`~/.tmux.conf`:
+
+```tmux
+set -g @plugin 'aleclearmind/nested-tmux'
+```
+
+Hit prefix + I to fetch the plugin and source it.
+
+Alternatively, install and use directly without TPM:
+
 ```
 mkdir ~/.tmux.conf.d/
 cd ~/.tmux.conf.d/
 git clone https://github.com/aleclearmind/nested-tmux.git
 mv ~/.tmux.conf ~/.tmux.conf.backup
-echo "source ~/.tmux.conf.d/nested-tmux/active-row.conf" > ~/.tmux.conf
+echo 'TPM_PLUGIN_DIR="~/.tmux.conf.d/nested-tmux"' > ~/.tmux.conf
+echo 'source "$TPM_PLUGIN_DIR/active-row.conf"' >> ~/.tmux.conf
 tmux
 ```
 
 # Shortcuts
 
-* `Ctrl + a, Ctrl + c` or `Ctrl + t`: create a new window
-* `Ctrl + a, Ctrl + s`: create a new nested tmux session and ask a name for it
-* `Ctrl + a, Ctrl + A`: switch to last window
-* `Ctrl + a, A`: rename current window
+* `Ctrl + z, Ctrl + c` or `Ctrl + t`: create a new window
+* `Ctrl + z, Ctrl + s`: create a new nested tmux session and ask a name for it
+* `Ctrl + z, Ctrl + A`: switch to last window
+* `Ctrl + z, A`: rename current window
 * `Alt + Right`: move to the next window of the current row
 * `Alt + Left`: move to the previous window of the current row
 * `Alt + Up`: move to the inner tmux session
