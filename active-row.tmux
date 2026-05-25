@@ -120,16 +120,18 @@ if [[ -f "$TPM_PLUGIN_DIR/dotbar.tmux" ]]; then
   tmux set -g @tmux-dotbar-fg-current "$active_window_bg"
 
   # Conditionally apply 'nobold' if @tmux-dotbar-bold-status is true
-  if [ "$bold_status" = true ]; then
-    status_left="#[bg=$bar_bg,fg=$fg_session]#{?client_prefix,, $base_status_left }#[bg=$fg_prefix,fg=$bar_bg,nobold]#{?client_prefix, $base_status_left ,}#[bg=$bar_bg,fg=${fg_session}]"
-  else
-    status_left="#[bg=$bar_bg,fg=$fg_session]#{?client_prefix,, $base_status_left }#[bg=$fg_prefix,fg=$bar_bg,bold]#{?client_prefix, $base_status_left ,}#[bg=$bar_bg,fg=${fg_session}]"
-  fi
-
-  tmux set -g @tmux-dotbar-status-left "$status_left"
+  # if [ "$bold_status" = true ]; then
+  #   status_left="#[bg=$bar_bg,fg=$fg_session]#{?client_prefix,, $base_status_left }#[bg=$fg_prefix,fg=$bar_bg,nobold]#{?client_prefix, $base_status_left ,}#[bg=$bar_bg,fg=${fg_session}]"
+  # else
+  #   status_left="#[bg=$bar_bg,fg=$fg_session]#{?client_prefix,, $base_status_left }#[bg=$fg_prefix,fg=$bar_bg,bold]#{?client_prefix, $base_status_left ,}#[bg=$bar_bg,fg=${fg_session}]"
+  # fi
+  # tmux set -g @tmux-dotbar-status-left "$status_left"
+  tmux set -g @tmux-dotbar-session-text "$base_status_left"
 
   tmux set -g @tmux-dotbar-right "true"
-  tmux set -g @tmux-dotbar-status-right "$base_status_right"
+
+  tmux set -g @tmux-dotbar-status-right-text "$base_status_right"
+
   tmux set -g @tmux-dotbar-position "$status_position"
   . $TPM_PLUGIN_DIR/dotbar.tmux
 else
