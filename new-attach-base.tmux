@@ -15,10 +15,10 @@
 #     do
 #       session=${session%%:*}
 #       if [[ "$session" = "$1" ]]; then
-#         . $TPM_PLUGIN_DIR/new-tmux-base.tmux "$socket" "$session"
+#         source $TPM_PLUGIN_DIR/new-tmux-base.tmux "$socket" "$session"
 #         ! break
 #       fi
 #     done
-#   done } && . $TPM_PLUGIN_DIR/new-smug-base.tmux "$1"
+#   done } && source $TPM_PLUGIN_DIR/new-smug-base.tmux "$1"
 
-. $TPM_PLUGIN_DIR/new-smug-base.tmux "$1"
+source $TPM_PLUGIN_DIR/new-smug-base.tmux "$1"

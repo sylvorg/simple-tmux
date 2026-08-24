@@ -17,6 +17,7 @@ tmux unbind -n -a
 #       Try using `run-shell' or putting the contents back into `active-row.tmux'.
 #       Otherwise, turn this into a script.
 tmux bind -n M-F12 run-shell "$TPM_PLUGIN_DIR/move-up.tmux"
+tmux bind -n C-M-\\ run-shell "$TPM_PLUGIN_DIR/active-row.tmux"
 
 inactive_window_bg="$(tmux show-options -gqv "@simple-inactive-window-bg")"
 inactive_window_bg=${inactive_window_bg:-colour102}
@@ -27,8 +28,26 @@ maximized_pane_icon=${maximized_pane_icon:-󰊓}
 
 # Change the background color to unactive
 if [[ -f "$TPM_PLUGIN_DIR/dotbar.tmux" ]]; then
+  separator_bg="$(tmux show-options -gqv "@simple-separator-bg")"
+  separator_bg=${separator_bg:-$bar_bg}
+  separator_fg="$(tmux show-options -gqv "@simple-separator-fg")"
+  separator_fg=${separator_fg:-$bar_fg}
+  separator="$(tmux show-options -gqv "@simple-separator")"
+  if [[ -z "$separator" ]]; then
+    separator="#[bg=${separator_bg},fg=${separator_fg}]•"
+  fi
+  separators="$(tmux show-options -gqv "@simple-separators")"
+
+  # Adapted From:
+  # Answer: https://stackoverflow.com/a/45201229
+  # User: https://stackoverflow.com/users/4272464/bgoldst
+  readarray -td \; separators <<< "${separators:-$separator}"
+  declare -a separators
+
+  tmux set -g @tmux-dotbar-status-right-text "${separators[ $RANDOM % ${#separators[@]} ]}"
+
   tmux set -g @tmux-dotbar-fg-current "$inactive_window_bg"
-  . $TPM_PLUGIN_DIR/dotbar.tmux
+  source $TPM_PLUGIN_DIR/dotbar.tmux
 else
   tmux setw -g window-status-current-style bg=$inactive_window_bg
 fi
