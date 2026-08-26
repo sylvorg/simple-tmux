@@ -55,7 +55,11 @@ tmux set -g prefix2 $prefix2
 # fi
 
 tmux source-file "$TPM_PLUGIN_DIR/active-row.conf"
-tmux bind -n C-M-\\ run-shell "$TPM_PLUGIN_DIR/inactive-row.tmux"
+
+source "$TPM_PLUGIN_DIR/separator.tmux"
+
+tmux bind -n C-M-\\ run-shell "$TPM_PLUGIN_DIR/inactive-row.tmux" \\\; \\
+                    set -g @tmux-dotbar-status-right-text "${separators[ $RANDOM % ${#separators[@]} ]}"
 
 status_position="$(tmux show-options -gqv "@simple-status-position")"
 status_position=${status_position:-bottom}
@@ -78,7 +82,6 @@ tmux bind -n M-$inner_vim send-keys M-F12
 
 # Switch to outer tmux (Alt + Down)
 # TODO: Do I need to do the same thing as the move-up command?
-# TODO: Create a `move-down.tmux' script.
 tmux bind -n M-$outer run-shell "$TPM_PLUGIN_DIR/move-down.tmux"
 tmux bind -n M-$outer_vim run-shell "$TPM_PLUGIN_DIR/move-down.tmux"
 
@@ -96,21 +99,6 @@ base_status_left="$(tmux show-options -gqv "@simple-status-left")"
 base_status_left=${base_status_left:-#S}
 base_status_right="$(tmux show-options -gqv "@simple-status-right")"
 base_status_right=${base_status_right:-#h}
-separator_bg="$(tmux show-options -gqv "@simple-separator-bg")"
-separator_bg=${separator_bg:-$bar_bg}
-separator_fg="$(tmux show-options -gqv "@simple-separator-fg")"
-separator_fg=${separator_fg:-$bar_fg}
-separator="$(tmux show-options -gqv "@simple-separator")"
-if [[ -z "$separator" ]]; then
-  separator="#[bg=${separator_bg},fg=${separator_fg}]•"
-fi
-separators="$(tmux show-options -gqv "@simple-separators")"
-
-# Adapted From:
-# Answer: https://stackoverflow.com/a/45201229
-# User: https://stackoverflow.com/users/4272464/bgoldst
-readarray -td \; separators <<< "${separators:-$separator}"
-declare -a separators
 
 if [[ -f "$TPM_PLUGIN_DIR/dotbar.tmux" ]]; then
   tmux set -g @tmux-dotbar-window-status-separator " ${separators[ $RANDOM % ${#separators[@]} ]} "
