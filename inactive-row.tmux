@@ -28,6 +28,10 @@ maximized_pane_icon=${maximized_pane_icon:-󰊓}
 
 # Change the background color to unactive
 if [[ -f "$TPM_PLUGIN_DIR/dotbar.tmux" ]]; then
+  if [[ -n "${1:-}" ]]; then
+    source "$TPM_PLUGIN_DIR/separator.tmux"
+    tmux set -g @tmux-dotbar-status-right-text "${separators[ $RANDOM % ${#separators[@]} ]}"
+  fi
   tmux set -g @tmux-dotbar-fg-current "$inactive_window_bg"
   source $TPM_PLUGIN_DIR/dotbar.tmux
 else

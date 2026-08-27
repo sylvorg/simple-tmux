@@ -55,11 +55,7 @@ tmux set -g prefix2 $prefix2
 # fi
 
 tmux source-file "$TPM_PLUGIN_DIR/active-row.conf"
-
-source "$TPM_PLUGIN_DIR/separator.tmux"
-
-tmux bind -n C-M-\\ run-shell "$TPM_PLUGIN_DIR/inactive-row.tmux" \\\; \\
-                    set -g @tmux-dotbar-status-right-text "${separators[ $RANDOM % ${#separators[@]} ]}"
+tmux bind -n C-M-\\ run-shell "$TPM_PLUGIN_DIR/inactive-row.tmux true"
 
 status_position="$(tmux show-options -gqv "@simple-status-position")"
 status_position=${status_position:-bottom}
@@ -99,6 +95,8 @@ base_status_left="$(tmux show-options -gqv "@simple-status-left")"
 base_status_left=${base_status_left:-#S}
 base_status_right="$(tmux show-options -gqv "@simple-status-right")"
 base_status_right=${base_status_right:-#h}
+
+source "$TPM_PLUGIN_DIR/separator.tmux"
 
 if [[ -f "$TPM_PLUGIN_DIR/dotbar.tmux" ]]; then
   tmux set -g @tmux-dotbar-window-status-separator " ${separators[ $RANDOM % ${#separators[@]} ]} "
